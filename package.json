@@ -8,11 +8,12 @@
   "description": "newly created repo",
   "license": "MIT",
   "dependencies": {
+    "express-remove-route": "^1.0.0",
+    "underscore": "^1.9.2"
   },
   "devDependencies": {},
   "scripts": {},
-  "keywords": [
-  ],
+  "keywords": [],
   "main": "index.js",
   "name": "express-swizzle-route",
   "repository": {
