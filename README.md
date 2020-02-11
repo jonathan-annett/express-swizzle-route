@@ -14,7 +14,7 @@ example
     var express = require("express");
     var swizzleRoute = require("express-swizzle-route");
     
-    
+    var port = 3000;
     var app=express();
     
     
