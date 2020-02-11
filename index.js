@@ -1,6 +1,7 @@
 module.exports = createSwizzledRoute;
 
 var removeRoute = require('express-remove-route');
+var swizzled={};
 
 function createSwizzledRoute(app,method,path,options) {
     
@@ -23,6 +24,12 @@ function createSwizzledRoute(app,method,path,options) {
     
     // install the temporary "first time handler for the url path"
     app[method](path,function(req,res){
+        
+        //backup the swizzling arguments...
+        if (options.permitUndo){
+            if (swizzled[path]) swizzled[path].splice(0,4);
+            swizzled[path]=[app,method,path,options];
+        }
         
         // remove the swizzled route
         removeRoute(app,path);
@@ -59,4 +66,20 @@ function createSwizzledRoute(app,method,path,options) {
     });
     
 }
+
+createSwizzledRoute.undo = function undoSwizzledRoute(path) {
+   var 
+   args = swizzled[path],
+   continue_=function() {
+       createSwizzledRoute.apply(this,args);
+   };
+   if (args) {
+       delete swizzled[path];
+       if (args[3].teardown) {
+           args[3].teardown(args[3],continue_);
+       } else {
+           continue_();
+       }
+   }
+};
 
