@@ -11,16 +11,8 @@ function createSwizzledRoute(app,method,path,options) {
     
     // establish a (quasi?) async setup callback to call for the first time the 
     // handler is called by an external browser / remote client 
-    var doSetup = options.asyncSetup;
-    
-    if (typeof options.syncSetup==='function') {
-        doSetup = function(options,cb) {
-            // the setup code is sync,call it and immediately invoke callback
-            options.syncSetup(options);
-            cb();
-        };
-    }
-    
+    var doSetup = options.setup;
+
     if (typeof doSetup !== 'function') {
         doSetup = function(options,cb) {
             // there is no setup code so just invoke callback immedately
