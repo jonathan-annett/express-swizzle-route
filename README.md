@@ -20,7 +20,9 @@ setup routes in express that get replaced the first time they are requested.
         asyncSetup : function(options,cb) {
         
             fs.readFile("./some/cached/file.json",function(err,data) {
-                if (err) return res.send(500); 
+                if (err) {
+                    throw err;
+                }
                 late_loaded_cache = JSON.parse(data);
                 cb();
             });
