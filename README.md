@@ -43,7 +43,7 @@ setup routes in express that get replaced the first time they are requested.
     
     // define handler in a asyncSetup callback that creates a static file 
     // on first call, swapping it out for a static route to that file thereafter
-    swizzleRoute(app,"use","./some/file.html",{
+    swizzleRoute(app,"use","/some/file.html",{
         asyncSetup : function(options) {
             fs.writeFile(
             __dirname+"/my-index.html",
