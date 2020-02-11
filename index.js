@@ -82,4 +82,4 @@ createSwizzledRoute.undo = function undoSwizzledRoute(path) {
        }
    }
 };
-
+createSwizzledRoute.removeRoute = removeRoute;
