@@ -2,7 +2,7 @@ module.exports = createSwizzledRoute;
 
 var removeRoute = require('express-remove-route');
 
-function createSwizzledRoute(app,method,path,handler,asyncSetup,syncSetup) {
+function createSwizzledRoute(app,method,path,options) {
     
     method = method || "get";
     
@@ -11,18 +11,18 @@ function createSwizzledRoute(app,method,path,handler,asyncSetup,syncSetup) {
     
     // establish a (quasi?) async setup callback to call for the first time the 
     // handler is called by an external browser / remote client 
-    var doSetup = asyncSetup;
+    var doSetup = options.asyncSetup;
     
-    if (typeof syncSetup==='function') {
-        doSetup = function(cb) {
+    if (typeof options.syncSetup==='function') {
+        doSetup = function(options,cb) {
             // the setup code is sync,call it and immediately invoke callback
-            syncSetup();
+            options.syncSetup(options);
             cb();
         };
     }
     
     if (typeof doSetup !== 'function') {
-        doSetup = function(cb) {
+        doSetup = function(options,cb) {
             // there is no setup code so just invoke callback immedately
             cb();
         };
@@ -36,28 +36,30 @@ function createSwizzledRoute(app,method,path,handler,asyncSetup,syncSetup) {
         removeRoute(app,path);
         
         // install a temporary stack to hold any requessts that come in while setup is happening
-        var temp_stack=[];
+        options.temp_stack=[];
         app[method](path,function(req,res){
-            temp_stack.push({req:req,res:res});
+            options.temp_stack.push({req:req,res:res});
         });
         
         // perform any setup required for the handler's first invocation
-        doSetup (function(){
+        doSetup (options,function(){
             // once we are fully setup, remove the temp handler install the defined handler
             removeRoute(app,path);
-            app[method](path,handler); 
+            app[method](path,options.handler); 
             // handle the "first" request, which kicked off the setup/swizzle process
-            handler(req,res);
+            options.handler(req,res);
             
             // in most cases, temp_stack will have no entries.
             // especially if there was no setup, of if setup was synchronous.
             // if however additional requests came in while setup was happening, 
             // they will be in temp_stack, so we handle them now.
-            temp_stack.forEach(function(backlog){
-                handler(backlog.req,backlog.res);                
-            });
-            
-            temp_stack=null;
+            if (options.temp_stack.length>0) {
+                options.temp_stack.forEach(function(backlog){
+                    options.handler(backlog.req,backlog.res);                
+                });
+                options.temp_stack.splice(0,options.temp_stack.length);
+            }
+            delete options.temp_stack;
 
         });            
 
