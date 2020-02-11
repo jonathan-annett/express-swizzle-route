@@ -1,10 +1,18 @@
 # express-swizzle-route
 
+
 setup routes in express that get replaced the first time they are requested.
 
 
-    var swizzleRoute = require("express-swizzle-route");
+installation
+
+    npm install --save github:jonathan-annett/express-swizzle-route
     
+
+example
+
+    var express = require("express");
+    var swizzleRoute = require("express-swizzle-route");
     
     
     var app=express();
@@ -53,4 +61,7 @@ setup routes in express that get replaced the first time they are requested.
         }
     });
 
-    
+    var listener = app.listen(port||0, function() {
+        var url =  'http://localhost:' + listener.address().port+"/";
+        console.log('server running at '+url);
+    });
