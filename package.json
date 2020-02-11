@@ -1,0 +1,23 @@
+{
+  "author": {
+    "name": "Jonathan Annett",
+    "url": "http://github.com/jonathan-annett",
+    "email": "jonathan.max.annett@gmail.com"
+  },
+  "contributors": [],
+  "description": "newly created repo",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "keywords": [
+  ],
+  "main": "index.js",
+  "name": "express-swizzle-route",
+  "repository": {
+    "url": "https://github.com/jonathan-annett/express-swizzle-route",
+    "type": "git"
+  },
+  "version": "0.0.1"
+}
