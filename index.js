@@ -1,6 +1,6 @@
 module.exports = createSwizzledRoute;
 
-var removeRoute = require('express-remove-route');
+var removeRoute = require('remove-route-runtime');
 var swizzled={};
 
 function createSwizzledRoute(app,method,path,options) {

@@ -5,11 +5,10 @@
     "email": "jonathan.max.annett@gmail.com"
   },
   "contributors": [],
-  "description": "newly created repo",
+  "description": "setup routes in express that get replaced the first time they are requested.",
   "license": "MIT",
   "dependencies": {
-    "express-remove-route": "^1.0.0",
-    "underscore": "^1.9.2"
+    "remove-route-runtime": "^1.0.1"
   },
   "devDependencies": {},
   "scripts": {},
